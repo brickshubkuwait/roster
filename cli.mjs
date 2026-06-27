@@ -1,8 +1,7 @@
 #!/usr/bin/env node
-// Roster CLI — read-only, department-scoped (by your ROSTER_TOKEN).
+// Roster CLI — query your team's work via your ROSTER_TOKEN.
 //   roster stats | team | overdue | workload | active | comments
 //   roster search "<text>"   roster card <id>   roster help
-//   (admin only: roster ps-issues | audit)
 import { callRoster, QUERIES } from './lib/client.mjs'
 
 const [, , cmd, ...rest] = process.argv
@@ -40,7 +39,7 @@ function printObject(o) {
 }
 
 function help() {
-  console.log('\nRoster CLI — read-only, scoped to your token\n')
+  console.log('\nRoster CLI\n')
   for (const [c, def] of Object.entries(COMMANDS)) {
     const label = (c + (def.arg ? ' ' + def.arg : '')).padEnd(20)
     console.log('  roster ' + label + (QUERIES[def.q]?.desc || '') + (def.admin ? '  (admin only)' : ''))
@@ -65,7 +64,7 @@ if (def.q === 'card') {
 
 try {
   const r = await callRoster(def.q, params)
-  console.log(`\n${cmd.toUpperCase()}  —  ${r.scope}  —  ${r.count} result${r.count === 1 ? '' : 's'}\n`)
+  console.log(`\n${cmd.toUpperCase()}  —  ${r.count} result${r.count === 1 ? '' : 's'}\n`)
   if (Array.isArray(r.data)) table(r.data)
   else printObject(r.data)
   if (r.note) console.log('\n  note: ' + r.note)

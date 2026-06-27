@@ -1,9 +1,9 @@
 {
-  "name": "roster",
+  "name": "roster-cli-mcp",
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Roster — read-only, department-scoped CLI + MCP for your team's work",
+  "description": "Roster CLI + MCP — query your team's work from the terminal or Claude",
   "bin": {
     "roster": "./cli.mjs"
   },
