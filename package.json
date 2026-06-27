@@ -1,0 +1,17 @@
+{
+  "name": "roster",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Roster — read-only, department-scoped CLI + MCP for your team's work",
+  "bin": {
+    "roster": "./cli.mjs"
+  },
+  "scripts": {
+    "mcp": "node mcp.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "zod": "^3.23.8"
+  }
+}
