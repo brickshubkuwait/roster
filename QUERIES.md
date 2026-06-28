@@ -19,6 +19,46 @@ What each command returns.
 | `departments` | The roster's departments and their headcount. |
 | `shoots` | The whole shoot schedule, company-wide — date, client, type, crew (recent + upcoming). |
 
+## Card fields
+
+`card <id>` returns every field set on the card (empty ones are left out):
+
+| Field | What it is |
+|---|---|
+| `card` | The card title |
+| `client` | Client the work is for |
+| `stage` | Which board column it's sitting in right now |
+| `department` | The card's department tag |
+| `priority` | low / medium / high |
+| `assignee` | Who owns it |
+| `collaborators` | Everyone else working on it |
+| `due` · `done` | Due date, and whether it's complete |
+| `delivery month` | Target delivery month |
+| `occasion` | Campaign / occasion tag |
+| `location` | Shoot or work location |
+| `subtasks` | Checklist progress (done / total) and each item |
+| `split` | If the task is split, who the second half is on (+ note) |
+| `connected` | Linked / split-off cards |
+| `description` | The full brief |
+| `created` | When the card was first made |
+| `last activity` | The most recent change to it |
+
+```text
+$ brello card 1c11685c
+card:           WOW Caterers | JUN Video 2
+client:         WOW Caterers
+stage:          In Progress
+department:     Reel Video Edit
+priority:       high
+assignee:       Joshin Samuel
+collaborators:  Mahmoud Hesham, Krishna Gaikwad
+due:            Jun 28        done: no
+subtasks:       2/3 — ✓ Script  ✓ Rough cut  • Color grade
+split:          yes → Mahmoud Hesham
+description:    BTS edit, keep it real, music carries the brand…
+created:        Jun 05        last activity: Jun 18
+```
+
 ## Limits & pagination
 
 | | |

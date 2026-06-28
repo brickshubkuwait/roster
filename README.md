@@ -49,7 +49,7 @@ brello auth
 | `brello reactions` | Recent emoji reactions on your team's cards |
 | `brello activity` | Card history — moves (stage→stage), comments, splits, edits |
 | `brello search "<text>"` | Find cards by title or client |
-| `brello card <id>` | Full card detail — description, subtasks, split, collaborators, links |
+| `brello card <id>` | Every field on a card — brief, subtasks, split, collaborators, links, created + last update |
 | `brello stages` | Board stages with your team's open card count in each |
 | `brello departments` | The roster's departments and headcount |
 | `brello shoots` | The whole shoot schedule — recent + upcoming, company-wide |
