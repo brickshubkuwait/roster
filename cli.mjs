@@ -33,6 +33,7 @@ const COMMANDS = {
   reactions:   { q: 'reactions' },
   activity:    { q: 'activity' },
   search:      { q: 'search', arg: '"<text>"' },
+  user:        { q: 'user', arg: '<name>' },
   card:        { q: 'card', arg: '<id>' },
   stages:      { q: 'stages' },
   departments: { q: 'departments' },
@@ -82,10 +83,22 @@ if (def.q === 'card') {
   params.id = (rest[0] || '').trim()
   if (!params.id) { console.error('Add a card id (first 8 chars are fine), e.g.   brello card 1c11685c'); process.exit(1) }
 }
+if (def.q === 'user') {
+  params.who = rest.join(' ').trim()
+  if (!params.who) { console.error('Add a name, e.g.   brello user Samer'); process.exit(1) }
+}
 
 try {
   const r = await callRoster(def.q, params)
-  console.log(`\n${cmd.toUpperCase()}  —  ${r.count} result${r.count === 1 ? '' : 's'}\n`)
+  if (r.person) {
+    const p = r.person, t = r.totals || {}
+    console.log(`\n${p.name}${p.role ? '  ·  ' + p.role.replace(/_/g, ' ') : ''}${p.department ? '  ·  ' + p.department : ''}`)
+    console.log(`  ${t.cards ?? r.count} cards   —   ${t.live ?? 0} live · ${t.done ?? 0} done · ${t.archived ?? 0} archived`)
+    if (r.active_on) console.log(`  ⏱  tracking now: ${r.active_on}`)
+    console.log('')
+  } else {
+    console.log(`\n${cmd.toUpperCase()}  —  ${r.count} result${r.count === 1 ? '' : 's'}\n`)
+  }
   if (Array.isArray(r.data)) table(r.data)
   else printObject(r.data)
   if (r.note) console.log('\n  note: ' + r.note)
