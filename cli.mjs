@@ -38,6 +38,7 @@ const COMMANDS = {
   stages:      { q: 'stages' },
   departments: { q: 'departments' },
   shoots:      { q: 'shoots' },
+  markup:      { q: 'markup', arg: '[filter]' },
   'ps-issues': { q: 'ps_issues', admin: true },
   audit:       { q: 'audit', admin: true },
 }
@@ -86,6 +87,10 @@ if (def.q === 'card') {
 if (def.q === 'user') {
   params.who = rest.join(' ').trim()
   if (!params.who) { console.error('Add a name, e.g.   brello user Samer'); process.exit(1) }
+}
+if (def.q === 'markup') {
+  const f = rest.join(' ').trim()
+  if (f) params.q = f   // optional name filter, e.g.  brello markup reel
 }
 
 try {

@@ -30,6 +30,7 @@ server.tool('roster_card', 'Full card detail — description, stage, subtasks, s
 server.tool('roster_stages', 'Board stages (lists) with your team’s open card count in each', {}, wrap('stages'))
 server.tool('roster_departments', 'The roster’s departments and headcount', {}, wrap('departments'))
 server.tool('roster_shoots', 'The whole shoot schedule — recent + upcoming, company-wide (date, client, type, crew)', {}, wrap('shoots'))
+server.tool('roster_markup', 'Markup.io review feed — videos/images submitted for review (name, type, submitted date, open comment-thread count, link). Optional name filter.', { q: z.string().optional().describe('optional filter by item name') }, wrap('markup', a => (a.q ? { q: a.q } : {})))
 server.tool('roster_ps_issues', 'Open Product Support issues (admin only)', {}, wrap('ps_issues'))
 server.tool('roster_audit', 'Access log: who queried what and when (admin only)', {}, wrap('audit'))
 

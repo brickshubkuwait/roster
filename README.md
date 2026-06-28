@@ -51,6 +51,7 @@ brello auth
 | `brello search "<text>"` | Find cards by title or client |
 | `brello user <name>` | Everything for one person — every card, live AND archived, with their open/done/archived totals + what they're tracking now |
 | `brello card <id>` | Every field on a card — brief, subtasks, split, collaborators, links, created + last update |
+| `brello markup [filter]` | Markup.io review feed — videos/images submitted for review, open comment-thread counts + links |
 | `brello stages` | Board stages with your team's open card count in each |
 | `brello departments` | The roster's departments and headcount |
 | `brello shoots` | The whole shoot schedule — recent + upcoming, company-wide |
