@@ -52,6 +52,12 @@ brello auth
 | `brello user <name>` | Everything for one person — every card, live AND archived, with their open/done/archived totals + what they're tracking now |
 | `brello card <id>` | Every field on a card — brief, subtasks, split, collaborators, links, created + last update |
 | `brello markup [filter]` | Markup.io review feed — videos/images submitted for review, open comment-thread counts + links |
+| `brello client "<name>"` | Everything for one client — every in-scope card (live + done), who's on it, with open/done/overdue totals |
+| `brello due [days]` | Cards due soon — the next N days (default 7), soonest first |
+| `brello done [days]` | Recently completed cards — the last N days (default 14) |
+| `brello blocked` | Blocked or stuck cards — explicit blockers, or overdue by 3+ days |
+| `brello recent [n]` | Recently touched cards across your team (default 20) |
+| `brello now` | Live pulse — who's tracking now, what's due today, and the latest card moves |
 | `brello stages` | Board stages with your team's open card count in each |
 | `brello departments` | The roster's departments and headcount |
 | `brello shoots` | The whole shoot schedule — recent + upcoming, company-wide |

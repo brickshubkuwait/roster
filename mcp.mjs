@@ -31,6 +31,12 @@ server.tool('roster_stages', 'Board stages (lists) with your team’s open card 
 server.tool('roster_departments', 'The roster’s departments and headcount', {}, wrap('departments'))
 server.tool('roster_shoots', 'The whole shoot schedule — recent + upcoming, company-wide (date, client, type, crew)', {}, wrap('shoots'))
 server.tool('roster_markup', 'Markup.io review feed — videos/images submitted for review (name, type, submitted date, open comment-thread count, link). Optional name filter.', { q: z.string().optional().describe('optional filter by item name') }, wrap('markup', a => (a.q ? { q: a.q } : {})))
+server.tool('roster_client', 'Everything for one client — every in-scope card (live + done), who is on it, with open/done/overdue totals', { client: z.string().describe('client name (partial OK)') }, wrap('client', a => ({ client: a.client })))
+server.tool('roster_due', 'Cards due soon — the next N days (default 7), soonest first', { days: z.number().optional().describe('days ahead, default 7') }, wrap('due', a => (a.days ? { days: a.days } : {})))
+server.tool('roster_done', 'Recently completed cards — the last N days (default 14)', { days: z.number().optional().describe('days back, default 14') }, wrap('done', a => (a.days ? { days: a.days } : {})))
+server.tool('roster_blocked', 'Blocked or stuck cards — explicit blockers, or overdue by 3+ days', {}, wrap('blocked'))
+server.tool('roster_recent', 'Recently touched cards across your team (default 20)', { n: z.number().optional().describe('how many, default 20') }, wrap('recent', a => (a.n ? { n: a.n } : {})))
+server.tool('roster_now', 'Live pulse — who is tracking now, what is due today, and the latest card moves', {}, wrap('now'))
 server.tool('roster_ps_issues', 'Open Product Support issues (admin only)', {}, wrap('ps_issues'))
 server.tool('roster_audit', 'Access log: who queried what and when (admin only)', {}, wrap('audit'))
 
