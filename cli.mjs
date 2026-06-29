@@ -62,13 +62,34 @@ function printObject(o) {
 }
 
 function help() {
-  console.log('\nBrello CLI\n')
-  for (const [c, def] of Object.entries(COMMANDS)) {
-    const label = (c + (def.arg ? ' ' + def.arg : '')).padEnd(20)
-    console.log('  brello ' + label + (QUERIES[def.q]?.desc || '') + (def.admin ? '  (admin only)' : ''))
+  const tty = process.stdout.isTTY
+  const B = tty ? '\x1b[1m' : '', D = tty ? '\x1b[2m' : '', C = tty ? '\x1b[36m' : '', R = tty ? '\x1b[0m' : ''
+  const SECTIONS = [
+    { title: 'Get started', rows: [
+      ['auth', '', 'Sign in — paste the token your admin gave you'],
+      ['whoami', '', 'Check whether a token is set'],
+      ['logout', '', 'Remove your saved token'],
+    ] },
+    { title: 'Your team',        cmds: ['stats', 'team', 'workload', 'overdue', 'active', 'leaves', 'departments'] },
+    { title: 'Cards & people',   cmds: ['search', 'user', 'card', 'activity', 'comments', 'reactions'] },
+    { title: 'Board & production', cmds: ['stages', 'shoots', 'markup'] },
+    { title: 'Admin',            cmds: ['ps-issues', 'audit'] },
+  ]
+  const groups = SECTIONS.map(s => ({
+    title: s.title,
+    items: s.rows || s.cmds.map(k => [k, COMMANDS[k]?.arg || '', QUERIES[COMMANDS[k]?.q]?.desc || '']),
+  }))
+  const w = Math.max(...groups.flatMap(g => g.items.map(([n, a]) => (n + (a ? ' ' + a : '')).length)))
+  console.log(`\n${B}brello${R} ${D}— your team's work, from the terminal${R}\n`)
+  for (const g of groups) {
+    console.log(`${B}${g.title}${R}`)
+    for (const [n, a, desc] of g.items) {
+      console.log(`  ${C}${(n + (a ? ' ' + a : '')).padEnd(w)}${R}  ${D}${desc}${R}`)
+    }
+    console.log('')
   }
-  console.log('\n  First, sign in:  brello auth   (paste the token your admin gave you)')
-  console.log('  Then try:        brello stats\n')
+  console.log(`${D}  examples:  brello user Samer   ·   brello markup reel   ·   brello card 1c11685c${R}`)
+  console.log(`${D}  new here?  run  ${R}${C}brello auth${R}${D}  first, then  ${R}${C}brello stats${R}\n`)
 }
 
 if (!cmd || cmd === 'help' || cmd === '--help' || cmd === '-h') { help(); process.exit(0) }
