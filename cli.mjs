@@ -39,6 +39,17 @@ async function withSpinner(label, fn) {
 const vlen = (s) => stripAnsi(s).length
 const padEndV = (s, w) => s + ' '.repeat(Math.max(0, w - vlen(s)))
 const trunc = (s, w) => { s = String(s ?? ''); return s.length > w ? s.slice(0, Math.max(1, w - 1)) + '…' : s }
+// Auto-detect a Google Maps link in a location string (or build a maps SEARCH
+// url for a plain address), and render it as an OSC-8 terminal hyperlink so the
+// location is clickable in the terminal — same idea as SmartLocation on the web.
+const MAPS_RE = /maps\.google\.|google\.[a-z.]+\/maps|maps\.app\.goo\.gl|goo\.gl\/maps/i
+function mapsUrl(text) {
+  const t = String(text || '').trim()
+  const m = t.match(/(https?:\/\/\S+)/i)
+  if (m) return m[1].replace(/[),.;]+$/, '')
+  return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(t)
+}
+const osc8 = (url, label) => `\x1b]8;;${url}\x1b\\${label}\x1b]8;;\x1b\\`
 const MAXW = 46
 // Semantic cell colour: status / thread-count / booleans light up.
 function paint(col, val) {
@@ -133,7 +144,8 @@ function printObject(o) {
   for (const [k, v] of Object.entries(o)) {
     const n = Number(v)
     const isNum = v !== '' && v != null && Number.isFinite(n)
-    const val = v == null ? c.dim('—') : String(v)
+    let val = v == null ? c.dim('—') : String(v)
+    if (k === 'location' && v && TTY) val = osc8(mapsUrl(String(v)), c.cyan(String(v))) + c.dim(' ↗')
     const bar = isNum ? '  ' + c.cyan(sparkbar(n)) : ''
     console.log('  ' + c.dim('┃ ') + c.cyan((k.replace(/_/g, ' ')).padEnd(w)) + '  ' + val + bar)
   }
