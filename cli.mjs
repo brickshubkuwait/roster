@@ -4,6 +4,9 @@
 //   brello stats | team | overdue | workload | active | leaves
 //   brello comments | reactions | search "<text>" | card <id> | shoots | help
 import { callRoster, QUERIES, saveToken, clearToken, getToken } from './lib/client.mjs'
+import { homedir } from 'node:os'
+import { existsSync, writeFileSync, mkdirSync } from 'node:fs'
+import { join } from 'node:path'
 
 const [, , cmd, ...rest] = process.argv
 
@@ -27,6 +30,17 @@ function paint(col, val) {
   if (col === 'open_threads' || col === 'overdue') return (+s > 0) ? c.amber(s) : c.dim(s)
   if (col === 'done') return s === 'true' ? c.green('✓') : s === 'false' ? c.dim('·') : s
   return s
+}
+
+// ── first-run welcome theatre: guaranteed even when npm hides the postinstall
+// output. Plays once (marker in ~/.roster/.welcomed), only in a real terminal,
+// and not for `auth`/`login` (those have their own animation). ──
+const MARK = join(homedir(), '.roster', '.welcomed')
+if (TTY && !existsSync(MARK)) {
+  try { mkdirSync(join(homedir(), '.roster'), { recursive: true }); writeFileSync(MARK, new Date().toISOString()) } catch { /* */ }
+  if (cmd !== 'auth' && cmd !== 'login') {
+    try { const { playBoot } = await import('./lib/banner.mjs'); await playBoot() } catch { /* */ }
+  }
 }
 
 // ── auth: interactive, prompts for the token + a little terminal theatre ──
